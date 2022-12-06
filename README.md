@@ -1,5 +1,6 @@
 # teste
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'fontSize': '50px', 'fontFamily': 'Inter'}}}%%
 flowchart LR
     subgraph Data Collection
         j1((inicio))-->j2[solicição da classificação]
