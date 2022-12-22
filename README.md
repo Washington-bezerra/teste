@@ -21,3 +21,97 @@ flowchart LR
     d2-->j3
     end
 ```
+
+
+```mermaid
+classDiagram
+    class DocumentBusinessRules {
+        -List~DocumentRule~ rules
+        apply(Document document) Document
+    }
+    
+    class DocumentRule {
+        <<interface>>
+        invoke(Document document) Document
+    }
+    
+    class Document {
+        +DocumentType type
+        +List~DocumentFace~ faces
+        +DocumentStatus status
+        +Double confidenceThreshold
+        +Boolean classificationMatch
+        +DocumentFields fields
+        isProcessing() Boolean
+    }
+    
+    class DocumentFace {
+        +DocumentFaceType type
+        +DocumentType documentType
+        +DocumentFaceType classifiedType?
+        +DocumentType classifiedDocumentType?
+        +Double confidence?
+    }
+    
+    class DocumentType {
+        <<enumeration>>
+        RG
+        CNH
+        OTHER
+    }
+    
+    class DocumentFaceType {
+        <<enumeration>>
+        FRONT
+        BACK
+        FRONT_AND_BACK
+        UNKNOWN
+    }
+    
+    class DocumentStatus {
+        <<enumeration>>
+        PROCESSING
+        APPROVED
+        REFUSED
+        INDETERMINED
+        FAILED
+    }
+    
+    class DocumentFields {
+        +String cnhNumber?,
+        +String rgNumber?,
+        +String mothersName?,
+        +String fathersName?,
+        +String name?,
+        +LocalD issueDateate?,
+        +String cpfNumber?,
+        +String issuingEntity?,
+        +LocalD birthDateate?,
+        +String placeOfBirth?,
+        +String issuingCity?,
+        +String issuingState?,
+        +LocalD dateOfExpiryate?
+    }
+    
+    DocumentBusinessRules --* DocumentRule
+    DocumentRule --* Document
+    Document --* DocumentType
+    Document --* DocumentFace
+    Document --* DocumentStatus
+    Document --* DocumentFields
+    DocumentFace --* DocumentFaceType    
+```
+
+
+```mermaid
+stateDiagram-v2
+    AnalyseDocumentUserCase --> DocumentBusinessRules
+    AnalyseDocumentUserCase --> DocumentOcr
+    note left of AnalyseDocumentUserCase : Document
+    DocumentBusinessRules --> BusinessRule1
+    DocumentBusinessRules --> BusinessRule2
+    DocumentBusinessRules --> BusinessRuleN
+    BusinessRule1 --> [*]
+    BusinessRule2 --> [*]
+    BusinessRuleN --> [*]
+```
